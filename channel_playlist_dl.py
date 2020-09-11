@@ -9,7 +9,7 @@ import googleapiclient.errors
 CHANNEL_ID = "UCTsFhKAF7i0KklHZ8NGqOoQ"
 START_PAGE = 0
 # Exclusive page number
-END_PAGE = 1
+END_PAGE = 10
 PAGE_SIZE = 10
 BASE_EMBED_URL = "http://www.youtube.com/embed/videoseries?list="
 
@@ -23,7 +23,7 @@ ydl_opts = {
     'postprocessors': [{
         'key': 'FFmpegExtractAudio',
         'preferredcodec': 'mp3',
-        'preferredquality': '192',
+        'preferredquality': '256',
     }],
     'outtmpl': 'download/%(playlist_title)s/%(title)s.%(etx)s',
     'quiet': False
@@ -67,6 +67,7 @@ if __name__ == '__main__':
             print("Downloading Page %s Token: %s" % (current_page, next_page_token))
             for item in playlist["items"]:
                 embed_url = BASE_EMBED_URL + item["id"]
+                print("++ Download Full URL: %s" % embed_url)
                 download_playlist(embed_url)
         else:
             print("Skipping Page %s" % current_page)
