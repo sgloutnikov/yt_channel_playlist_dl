@@ -1,6 +1,7 @@
 import youtube_dl
 import os
 import sys
+import time
 import googleapiclient
 import googleapiclient.discovery
 import googleapiclient.errors
@@ -54,7 +55,9 @@ def download_playlist(playlist_url):
 if __name__ == '__main__':
     current_page = 0
     next_page_token = ""
-    while current_page < END_PAGE:
+    hasNextPage = True
+    while current_page < END_PAGE and hasNextPage:
+        time.sleep(2)
         # Always start from first page, skip until reached START_PAGE
         playlist = get_youtube_playlist(channel_id=CHANNEL_ID, max_result=PAGE_SIZE,
                                         page_token=next_page_token)
@@ -62,7 +65,7 @@ if __name__ == '__main__':
             next_page_token = playlist["nextPageToken"]
         except KeyError:
             print("Ran out of pages. Stopping.")
-            break
+            hasNextPage = False
         if current_page >= START_PAGE:
             print("Downloading Page %s Token: %s" % (current_page, next_page_token))
             for item in playlist["items"]:
